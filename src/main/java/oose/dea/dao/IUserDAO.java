@@ -1,9 +1,26 @@
 package oose.dea.dao;
 
 public interface IUserDAO {
-    //ToDo: Generate Java doc
-    boolean authenticate(String username, String password);
 
-    //ToDo: Generate Java doc
+    /**
+     *
+     * @param username
+     * @param password
+     * @return if user is authenticated
+     */
+    boolean isAuthenticated(String username, String password);
+
+    /**
+     *
+     * @param username
+     * @param Token
+     */
     void updateUserTokenInDatabase(String username, String Token);
+
+    /**
+     *
+     * @param username
+     * @return current saved user token
+     */
+    String getToken(String username);
 }

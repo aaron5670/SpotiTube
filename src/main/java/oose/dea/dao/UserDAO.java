@@ -30,4 +30,17 @@ public class UserDAO implements IUserDAO {
         }
         return false;
     }
+
+    @Override
+    public void updateUserTokenInDatabase(String username, String token) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "UPDATE users SET token = ? WHERE username = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, token);
+            preparedStatement.setString(2, username);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }

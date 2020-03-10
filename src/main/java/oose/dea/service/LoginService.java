@@ -14,12 +14,13 @@ public class LoginService {
         if (iUserDAO.authenticate(username, password)) {
             String token = tokenGenerator.generateToken();
 
-            TokenDTO tokenDTO = new TokenDTO(token, username);
+            TokenDTO tokenDTO = new TokenDTO(username, token);
 
             //ToDo:
             // Insert token into database
             // What is better? Create a TokenDAO or create a method 'setTokenInDatabase' in the UserDAO...
             // Example: iUserDAO.updateUserTokenInDatabase(username, token);
+            iUserDAO.updateUserTokenInDatabase(username, token);
 
             return tokenDTO;
         } else {

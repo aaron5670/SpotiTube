@@ -13,7 +13,6 @@ public class LoginService {
 
         if (iUserDAO.isAuthenticated(username, password)) {
             String token = tokenGenerator.generateToken();
-
             TokenDTO tokenDTO = new TokenDTO(username, token);
 
             //ToDo:

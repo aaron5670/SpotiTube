@@ -34,7 +34,7 @@ public class UserDAO implements IUserDAO {
     @Override
     public void updateUserTokenInDatabase(String username, String token) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "UPDATE users SET token = ? WHERE username = ?";
+            String sql = "UPDATE tokens SET token = ? WHERE username = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, token);
             preparedStatement.setString(2, username);
@@ -47,7 +47,7 @@ public class UserDAO implements IUserDAO {
     @Override
     public String getToken(String username) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT token FROM users WHERE username = ?";
+            String sql = "SELECT token FROM users INNER JOIN tokens t on users.username = t.username WHERE users.username = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, username);
             ResultSet resultSet = preparedStatement.executeQuery();

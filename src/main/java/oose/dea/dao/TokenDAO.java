@@ -17,7 +17,7 @@ public class TokenDAO implements ITokenDAO {
     @Override
     public boolean verifyToken(String token) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT token FROM token WHERE token = ?";
+            String sql = "SELECT token FROM tokens WHERE token = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();

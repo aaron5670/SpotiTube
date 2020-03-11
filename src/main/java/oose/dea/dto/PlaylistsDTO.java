@@ -6,10 +6,6 @@ public class PlaylistsDTO {
     private ArrayList<PlaylistDTO> playlists = new ArrayList<>();
     private int length;
 
-    public PlaylistsDTO(int length) {
-        this.length = length;
-    }
-
     public ArrayList<PlaylistDTO> getPlaylists() {
         return playlists;
     }

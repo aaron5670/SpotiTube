@@ -5,8 +5,10 @@ import oose.dea.dto.PlaylistsDTO;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
 @Path("/")
 public class PlaylistController {
@@ -16,15 +18,13 @@ public class PlaylistController {
     @GET
     @Path("/playlists")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllPlaylists() {
-
-        //ToDO:
-        //  Find out how to get the current user token?
-        String token = "USER-TOKEN";
+    public Response getAllPlaylists(@Context UriInfo QueryParam) {
+        String token = QueryParam.getQueryParameters().getFirst("token");
 
         PlaylistsDTO playlists = iPlaylistDAO.getAllPlaylists(token);
 
         if (playlists == null) {
+            System.out.println("isNull");
             return Response.status(404).build();
         }
 

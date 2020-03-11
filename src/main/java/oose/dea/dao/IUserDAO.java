@@ -16,11 +16,4 @@ public interface IUserDAO {
      * @param Token
      */
     void updateUserTokenInDatabase(String username, String Token);
-
-    /**
-     *
-     * @param username
-     * @return current saved user token
-     */
-    String getToken(String username);
 }

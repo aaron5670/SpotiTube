@@ -3,21 +3,23 @@ package oose.dea.dao;
 import javax.annotation.Resource;
 import javax.enterprise.inject.Default;
 import javax.sql.DataSource;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 @Default
-public class UserDAO implements IUserDAO {
+public class TokenDAO implements ITokenDAO {
 
     @Resource(name = "jdbc/spotitubeMySQL")
     DataSource dataSource;
 
     @Override
-    public boolean isAuthenticated(String username, String password) {
+    public boolean verifyToken(String token) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
+            String sql = "SELECT token FROM token WHERE token = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, username);
-            preparedStatement.setString(2, password);
+            preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.first()) {
@@ -32,15 +34,21 @@ public class UserDAO implements IUserDAO {
     }
 
     @Override
-    public void updateUserTokenInDatabase(String username, String token) {
+    public String getToken(String username) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "UPDATE tokens SET token = ? WHERE username = ?";
+            String sql = "SELECT token FROM users INNER JOIN tokens t on users.username = t.username WHERE users.username = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, token);
-            preparedStatement.setString(2, username);
-            preparedStatement.executeUpdate();
+            preparedStatement.setString(1, username);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.first()) {
+                return resultSet.getString("token");
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
+        return null;
     }
 }

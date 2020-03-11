@@ -6,6 +6,7 @@ import oose.dea.util.TokenGenerator;
 import javax.inject.Inject;
 
 public class LoginService {
+
     private TokenGenerator tokenGenerator = new TokenGenerator();
     private IUserDAO iUserDAO;
 
@@ -15,10 +16,6 @@ public class LoginService {
             String token = tokenGenerator.generateToken();
             TokenDTO tokenDTO = new TokenDTO(username, token);
 
-            //ToDo:
-            // Insert token into database
-            // What is better? Create a TokenDAO or create a method 'setTokenInDatabase' in the UserDAO...
-            // Example: iUserDAO.updateUserTokenInDatabase(username, token);
             iUserDAO.updateUserTokenInDatabase(username, token);
 
             return tokenDTO;

@@ -25,10 +25,6 @@ public class PlaylistDAO implements IPlaylistDAO {
 
     @Override
     public PlaylistsDTO getAllPlaylists(String token) {
-        //ToDo:
-        //  First verify if the token is real.
-        //  -- If token is verified, get all Playlists from database
-
         if (tokenService.verifyToken(token)) {
             ArrayList<PlaylistDTO> playlists = new ArrayList<>();
 
@@ -66,7 +62,6 @@ public class PlaylistDAO implements IPlaylistDAO {
                 return null;
             }
         }
-
         return null;
     }
 

@@ -47,6 +47,22 @@ public class PlaylistController {
         return Response.status(200).entity(playlists).build();
     }
 
+    @POST
+    @Path("/playlists")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteAPlaylist(@Context UriInfo QueryParam) {
+        String token = QueryParam.getQueryParameters().getFirst("token");
+
+        PlaylistsDTO playlists = iPlaylistDAO.addAPlaylist(token);
+
+        if (playlists == null) {
+            System.out.println("isNull");
+            return Response.status(404).build();
+        }
+
+        return Response.status(200).entity(playlists).build();
+    }
+
     @Inject
     public void setiPlaylistDAO(IPlaylistDAO iPlaylistDAO) {
         this.iPlaylistDAO = iPlaylistDAO;

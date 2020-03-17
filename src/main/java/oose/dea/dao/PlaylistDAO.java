@@ -83,6 +83,11 @@ public class PlaylistDAO implements IPlaylistDAO {
         return null;
     }
 
+    @Override
+    public PlaylistsDTO addAPlaylist(String token) {
+        return null;
+    }
+
     @Inject
     public void setTokenService(TokenService tokenService) {
         this.tokenService = tokenService;

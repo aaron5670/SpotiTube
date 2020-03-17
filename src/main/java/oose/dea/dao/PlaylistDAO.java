@@ -1,6 +1,5 @@
 package oose.dea.dao;
 
-import oose.dea.dto.AddPlaylistRequestDTO;
 import oose.dea.dto.PlaylistDTO;
 import oose.dea.dto.PlaylistsDTO;
 import oose.dea.service.TokenService;
@@ -85,13 +84,32 @@ public class PlaylistDAO implements IPlaylistDAO {
     }
 
     @Override
-    public PlaylistsDTO addAPlaylist(AddPlaylistRequestDTO addPlaylistRequestDTO, String token) {
+    public PlaylistsDTO addAPlaylist(PlaylistDTO playlistDTO, String token) {
         if (tokenService.verifyToken(token)) {
             try (Connection connection = dataSource.getConnection()) {
                 String sql = "INSERT INTO playlists (name, owner) VALUES (?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, addPlaylistRequestDTO.getName());
+                preparedStatement.setString(1, playlistDTO.getName());
                 preparedStatement.setString(2, tokenService.getUsernameByToken(token));
+                preparedStatement.executeUpdate();
+
+                return getAllPlaylists(token);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public PlaylistsDTO editAPlaylist(PlaylistDTO playlistDTO, String token) {
+        if (tokenService.verifyToken(token)) {
+            try (Connection connection = dataSource.getConnection()) {
+                String sql = "UPDATE playlists SET name = ? WHERE id = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, playlistDTO.getName());
+                preparedStatement.setInt(2, playlistDTO.getId());
                 preparedStatement.executeUpdate();
 
                 return getAllPlaylists(token);

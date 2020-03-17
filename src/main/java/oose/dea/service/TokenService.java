@@ -12,6 +12,10 @@ public class TokenService {
         return iTokenDAO.verifyToken(token);
     }
 
+    public String getUsernameByToken(String token) {
+        return iTokenDAO.getUsername(token);
+    }
+
     @Inject
     public void setiTokenDAO(ITokenDAO iTokenDAO) {
         this.iTokenDAO = iTokenDAO;

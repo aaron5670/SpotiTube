@@ -1,5 +1,6 @@
 package oose.dea.dao;
 
+import oose.dea.dto.AddPlaylistRequestDTO;
 import oose.dea.dto.PlaylistDTO;
 import oose.dea.dto.PlaylistsDTO;
 import oose.dea.service.TokenService;
@@ -84,7 +85,7 @@ public class PlaylistDAO implements IPlaylistDAO {
     }
 
     @Override
-    public PlaylistsDTO addAPlaylist(String token) {
+    public PlaylistsDTO addAPlaylist(AddPlaylistRequestDTO addPlaylistRequestDTO, String token) {
         return null;
     }
 

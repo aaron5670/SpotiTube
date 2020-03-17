@@ -1,6 +1,7 @@
 package oose.dea.controller;
 
 import oose.dea.dao.IPlaylistDAO;
+import oose.dea.dto.AddPlaylistRequestDTO;
 import oose.dea.dto.PlaylistsDTO;
 
 import javax.inject.Inject;
@@ -50,10 +51,10 @@ public class PlaylistController {
     @POST
     @Path("/playlists")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAPlaylist(@Context UriInfo QueryParam) {
+    public Response deleteAPlaylist(AddPlaylistRequestDTO addPlaylistRequestDTO, @Context UriInfo QueryParam) {
         String token = QueryParam.getQueryParameters().getFirst("token");
 
-        PlaylistsDTO playlists = iPlaylistDAO.addAPlaylist(token);
+        PlaylistsDTO playlists = iPlaylistDAO.addAPlaylist(addPlaylistRequestDTO, token);
 
         if (playlists == null) {
             System.out.println("isNull");

@@ -1,5 +1,6 @@
 package oose.dea.dao;
 
+import oose.dea.dto.AddPlaylistRequestDTO;
 import oose.dea.dto.PlaylistsDTO;
 
 public interface IPlaylistDAO {
@@ -23,9 +24,10 @@ public interface IPlaylistDAO {
 
     /**
      *
+     * @param addPlaylistRequestDTO addPlaylistRequest DTO
      * @param token valid user token
      * @return returns the body of the created playlist
      * @link https://github.com/aaron5670/SpotiTube#add-a-playlist
      */
-    PlaylistsDTO addAPlaylist(String token);
+    PlaylistsDTO addAPlaylist(AddPlaylistRequestDTO addPlaylistRequestDTO, String token);
 }

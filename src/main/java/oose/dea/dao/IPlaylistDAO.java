@@ -7,7 +7,7 @@ public interface IPlaylistDAO {
 
     /**
      *
-     * @param token user token
+     * @param token valid user token
      * @return all playlists
      * @link https://github.com/aaron5670/SpotiTube#get-all-playlists
      */

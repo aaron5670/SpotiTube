@@ -4,16 +4,16 @@ public interface IUserDAO {
 
     /**
      *
-     * @param username
-     * @param password
+     * @param username valid username
+     * @param password valid user password
      * @return if user is authenticated
      */
     boolean isAuthenticated(String username, String password);
 
     /**
      *
-     * @param username
-     * @param Token
+     * @param username valid username
+     * @param token valid user token
      */
-    void updateUserTokenInDatabase(String username, String Token);
+    void updateUserTokenInDatabase(String username, String token);
 }

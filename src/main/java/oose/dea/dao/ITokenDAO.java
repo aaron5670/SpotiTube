@@ -4,14 +4,14 @@ public interface ITokenDAO {
 
     /**
      *
-     * @param token user token
+     * @param token valid user token
      * @return true if token is in database
      */
     public boolean verifyToken(String token);
 
     /**
      *
-     * @param username
+     * @param username valid username
      * @return current saved user token
      */
     String getToken(String username);

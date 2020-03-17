@@ -15,4 +15,11 @@ public interface ITokenDAO {
      * @return current saved user token
      */
     String getToken(String username);
+
+    /**
+     *
+     * @param token valid user token
+     * @return returns the username associated with the associated token
+     */
+    String getUsername(String token);
 }

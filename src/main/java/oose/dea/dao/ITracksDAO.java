@@ -4,7 +4,7 @@ import oose.dea.dto.PlaylistDTO;
 import oose.dea.dto.PlaylistsDTO;
 import oose.dea.dto.TrackDTO;
 
-public interface ITrackDAO {
+public interface ITracksDAO {
 
     /**
      *

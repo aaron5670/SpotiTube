@@ -86,6 +86,20 @@ public class PlaylistDAO implements IPlaylistDAO {
 
     @Override
     public PlaylistsDTO addAPlaylist(AddPlaylistRequestDTO addPlaylistRequestDTO, String token) {
+        if (tokenService.verifyToken(token)) {
+            try (Connection connection = dataSource.getConnection()) {
+                String sql = "INSERT INTO playlists (name, owner) VALUES (?, ?)";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, addPlaylistRequestDTO.getName());
+                preparedStatement.setString(2, tokenService.getUsernameByToken(token));
+                preparedStatement.executeUpdate();
+
+                return getAllPlaylists(token);
+            } catch (SQLException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
         return null;
     }
 

@@ -5,6 +5,7 @@ public class TrackDTO {
     private String title;
     private String performer;
     private int duration;
+    private String album;
     private int playcount;
     private String publicationDate;
     private String description;
@@ -40,6 +41,14 @@ public class TrackDTO {
 
     public void setDuration(int duration) {
         this.duration = duration;
+    }
+
+    public String getAlbum() {
+        return album;
+    }
+
+    public void setAlbum(String album) {
+        this.album = album;
     }
 
     public int getPlaycount() {

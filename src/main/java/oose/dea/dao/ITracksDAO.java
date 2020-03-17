@@ -1,8 +1,7 @@
 package oose.dea.dao;
 
-import oose.dea.dto.PlaylistDTO;
-import oose.dea.dto.PlaylistsDTO;
 import oose.dea.dto.TrackDTO;
+import oose.dea.dto.TracksDTO;
 
 public interface ITracksDAO {
 
@@ -13,7 +12,7 @@ public interface ITracksDAO {
      * @return a response containing the complete list of available tracks
      * @link https://github.com/aaron5670/SpotiTube#get-all-tracks
      */
-    TrackDTO getAllTracks(String forPlaylist, String token);
+    TracksDTO getAllTracks(String forPlaylist, String token);
 
     /**
      *

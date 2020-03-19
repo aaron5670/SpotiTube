@@ -53,7 +53,7 @@ public class PlaylistController {
     @POST
     @Path("/playlists")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteAPlaylist(PlaylistDTO playlistDTO, @QueryParam("token") String token) {
+    public Response AddAPlaylist(PlaylistDTO playlistDTO, @QueryParam("token") String token) {
         try {
             if (!tokenService.tokenVerified(token))
                 return Response.status(400).build();

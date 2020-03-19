@@ -1,7 +1,7 @@
 package oose.dea.controller;
 
-import oose.dea.dto.TokenDTO;
-import oose.dea.dto.LoginRequestDTO;
+import oose.dea.controller.dto.TokenDTO;
+import oose.dea.controller.dto.LoginRequestDTO;
 import oose.dea.service.LoginService;
 
 import javax.inject.Inject;

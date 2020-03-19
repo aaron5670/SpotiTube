@@ -1,4 +1,4 @@
-package oose.dea.dto;
+package oose.dea.controller.dto;
 
 import java.util.ArrayList;
 

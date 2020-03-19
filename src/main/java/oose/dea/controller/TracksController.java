@@ -1,9 +1,7 @@
 package oose.dea.controller;
 
 import oose.dea.dao.ITracksDAO;
-import oose.dea.dto.PlaylistsDTO;
-import oose.dea.dto.TrackDTO;
-import oose.dea.dto.TracksDTO;
+import oose.dea.controller.dto.TracksDTO;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;

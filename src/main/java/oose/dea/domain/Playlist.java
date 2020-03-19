@@ -1,12 +1,13 @@
-package oose.dea.dto;
+package oose.dea.domain;
 
-import java.util.ArrayList;
+import java.util.List;
 
-public class PlaylistDTO {
+public class Playlist {
     private int id;
     private String name;
     private boolean owner;
-    private ArrayList<TrackDTO> tracks = new ArrayList<>();
+    private List<Track> tracks;
+    private int totalDuration;
 
     public int getId() {
         return id;
@@ -32,11 +33,19 @@ public class PlaylistDTO {
         this.owner = owner;
     }
 
-    public ArrayList<TrackDTO> getTracks() {
+    public List<Track> getTracks() {
         return tracks;
     }
 
-    public void setTracks(ArrayList<TrackDTO> tracks) {
+    public void setTracks(List<Track> tracks) {
         this.tracks = tracks;
+    }
+
+    public int getTotalDuration() {
+        return totalDuration;
+    }
+
+    public void setTotalDuration(int totalDuration) {
+        this.totalDuration = totalDuration;
     }
 }

@@ -8,7 +8,7 @@ public class TokenService {
 
     private ITokenDAO iTokenDAO;
 
-    public boolean verifyToken(String token) {
+    public boolean tokenVerified(String token) {
         return iTokenDAO.verifyToken(token);
     }
 

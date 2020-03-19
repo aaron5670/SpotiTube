@@ -1,7 +1,7 @@
 package oose.dea.service;
 
 import oose.dea.dao.IUserDAO;
-import oose.dea.dto.TokenDTO;
+import oose.dea.controller.dto.TokenDTO;
 import oose.dea.util.TokenGenerator;
 import javax.inject.Inject;
 

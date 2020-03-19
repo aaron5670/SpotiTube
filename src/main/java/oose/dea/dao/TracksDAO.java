@@ -1,7 +1,7 @@
 package oose.dea.dao;
 
-import oose.dea.dto.TrackDTO;
-import oose.dea.dto.TracksDTO;
+import oose.dea.controller.dto.TrackDTO;
+import oose.dea.controller.dto.TracksDTO;
 import oose.dea.service.TokenService;
 
 import javax.annotation.Resource;
@@ -25,7 +25,7 @@ public class TracksDAO implements ITracksDAO {
 
     @Override
     public TracksDTO getAllTracks(String forPlaylist, String token) {
-        if (tokenService.verifyToken(token)) {
+        if (tokenService.tokenVerified(token)) {
             ArrayList<TrackDTO> tracks = new ArrayList<>();
 
             try (Connection connection = dataSource.getConnection()) {

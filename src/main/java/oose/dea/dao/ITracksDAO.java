@@ -1,7 +1,7 @@
 package oose.dea.dao;
 
-import oose.dea.dto.TrackDTO;
-import oose.dea.dto.TracksDTO;
+import oose.dea.controller.dto.TrackDTO;
+import oose.dea.controller.dto.TracksDTO;
 
 public interface ITracksDAO {
 

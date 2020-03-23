@@ -51,10 +51,6 @@ public class TokenDAO implements ITokenDAO {
         return null;
     }
 
-    /**
-     * @param token valid user token
-     * @return returns the username associated with the associated token
-     */
     @Override
     public String getUsername(String token) {
         try (Connection connection = dataSource.getConnection()) {

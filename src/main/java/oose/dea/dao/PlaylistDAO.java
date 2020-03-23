@@ -21,7 +21,7 @@ public class PlaylistDAO implements IPlaylistDAO {
     @Override
     public List<Playlist> getAllPlaylists(String token) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = "SELECT p.id, p.name, t.token, (SELECT SUM(duration) FROM tracks WHERE tracks.playlistId = p.id) AS length\n" +
+            String sql = "SELECT p.id, p.name, t.token, (SELECT SUM(duration) FROM tracks INNER JOIN playlist_tracks pt on tracks.id = pt.trackId WHERE pt.playlistId = p.id) AS length\n" +
                     "FROM playlists p\n" +
                     "INNER JOIN users u on p.owner = u.username\n" +
                     "LEFT OUTER JOIN tokens t on u.username = t.username";
@@ -38,9 +38,6 @@ public class PlaylistDAO implements IPlaylistDAO {
                 } else {
                     playlist.setOwner(false);
                 }
-
-                //ToDo: Add tracks
-
                 playlist.setTotalDuration(resultSet.getInt("length"));
                 playlists.add(playlist);
             }

@@ -5,7 +5,7 @@ import oose.dea.domain.Track;
 
 import java.util.List;
 
-public interface ITracksDAO {
+public interface ITrackDAO {
 
     /**
      *
@@ -14,15 +14,7 @@ public interface ITracksDAO {
      * @return a response containing the complete list of available tracks
      * @link https://github.com/aaron5670/SpotiTube#get-all-tracks
      */
-    List<Track> getAllTracks(String forPlaylist, String token);
-
-    /**
-     *
-     * @param token valid user token
-     * @return a response containing the complete list of tracks for the given Playlist
-     * @link https://github.com/aaron5670/SpotiTube#get-all-tracks-that-belong-to-a-playlist
-     */
-    TrackDTO getTracksFromPlaylist(String token);
+    List<Track> getAllTracks(int forPlaylist, boolean addTracks, String token);
 
     /**
      *

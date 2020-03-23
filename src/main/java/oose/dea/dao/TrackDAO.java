@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Default
-public class TracksDAO implements ITracksDAO {
+public class TrackDAO implements ITrackDAO {
 
     private TokenService tokenService;
 
@@ -24,17 +24,14 @@ public class TracksDAO implements ITracksDAO {
     DataSource dataSource;
 
     @Override
-    public List<Track> getAllTracks(String forPlaylist, String token) {
+    public List<Track> getAllTracks(int forPlaylist, boolean addTracks, String token) {
         try (Connection connection = dataSource.getConnection()) {
-            PreparedStatement preparedStatement;
-            if (forPlaylist != null) {
-                String sql = "SELECT * FROM tracks WHERE playlistId = ?";
-                preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, forPlaylist);
-            } else {
-                String sql = "SELECT * FROM tracks";
-                preparedStatement = connection.prepareStatement(sql);
-            }
+            String sql = (addTracks) ?
+                    "SELECT * FROM playlist_tracks INNER JOIN tracks ON playlist_tracks.trackId = tracks.id WHERE playlistId != ?"
+                    :
+                    "SELECT * FROM playlist_tracks INNER JOIN tracks ON playlist_tracks.trackId = tracks.id WHERE playlistId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, forPlaylist);
             ResultSet resultSet = preparedStatement.executeQuery();
             List<Track> tracks = new ArrayList<>();
 
@@ -58,11 +55,6 @@ public class TracksDAO implements ITracksDAO {
             e.printStackTrace();
             return null;
         }
-    }
-
-    @Override
-    public TrackDTO getTracksFromPlaylist(String token) {
-        return null;
     }
 
     @Override

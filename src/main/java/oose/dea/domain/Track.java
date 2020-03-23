@@ -75,7 +75,7 @@ public class Track {
         this.description = description;
     }
 
-    public boolean isOfflineAvailable() {
+    public boolean getOfflineAvailable() {
         return offlineAvailable;
     }
 

@@ -19,11 +19,6 @@ public class TracksController {
     private TokenService tokenService;
     private ITrackDAO iTrackDAO;
 
-    //ToDo:
-    //  Uitzoeken wat nou het verschil is tussen:
-    //      - endpoint: /tracks
-    //      - endpoint: /playlists/{id}/tracks
-
     @GET
     @Path("/tracks")
     @Produces(MediaType.APPLICATION_JSON)
@@ -40,13 +35,45 @@ public class TracksController {
     }
 
     @GET
-    @Path("/playlists/{id}/tracks")
+    @Path("/playlists/{playlistId}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getAllTracksFromPlaylist(@PathParam("id") int playlistId, @QueryParam("token") String token) {
+    public Response getAllTracksFromPlaylist(@PathParam("playlistId") int playlistId, @QueryParam("token") String token) {
         try {
             if (!tokenService.tokenVerified(token))
                 return Response.status(400).build();
 
+            return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
+        } catch (InternalServerErrorException e) {
+            e.getStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
+    @DELETE
+    @Path("/playlists/{playlistId}/tracks/{trackId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response deleteTrackFromPlaylist(@PathParam("playlistId") int playlistId, @PathParam("trackId") int trackId, @QueryParam("token") String token) {
+        try {
+            if (!tokenService.tokenVerified(token))
+                return Response.status(400).build();
+
+            iTrackDAO.removeTrackFromPlaylist(playlistId, trackId);
+            return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
+        } catch (InternalServerErrorException e) {
+            e.getStackTrace();
+            return Response.status(500).build();
+        }
+    }
+
+    @POST
+    @Path("/playlists/{playlistId}/tracks")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response addTrackToPlaylist(@PathParam("playlistId") int playlistId, TrackDTO trackDTO, @QueryParam("token") String token) {
+        try {
+            if (!tokenService.tokenVerified(token))
+                return Response.status(400).build();
+
+            iTrackDAO.addTrackToPlaylist(playlistId, trackDTO.id, trackDTO.offlineAvailable);
             return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
         } catch (InternalServerErrorException e) {
             e.getStackTrace();

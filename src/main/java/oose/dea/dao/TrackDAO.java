@@ -26,10 +26,12 @@ public class TrackDAO implements ITrackDAO {
     @Override
     public List<Track> getAllTracks(int forPlaylist, boolean addTracks, String token) {
         try (Connection connection = dataSource.getConnection()) {
-            String sql = (addTracks) ?
-                    "SELECT * FROM playlist_tracks INNER JOIN tracks ON playlist_tracks.trackId = tracks.id WHERE playlistId != ?"
-                    :
-                    "SELECT * FROM playlist_tracks INNER JOIN tracks ON playlist_tracks.trackId = tracks.id WHERE playlistId = ?";
+            String sql;
+            if (addTracks) {
+                sql = "SELECT * FROM tracks LEFT JOIN playlist_tracks pt ON tracks.id = pt.trackId WHERE pt.playlistId != ? OR pt.playlistId IS NULL";
+            } else {
+                sql = "SELECT * FROM tracks LEFT JOIN playlist_tracks pt ON tracks.id = pt.trackId WHERE pt.playlistId = ?";
+            }
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setInt(1, forPlaylist);
             ResultSet resultSet = preparedStatement.executeQuery();
@@ -58,13 +60,30 @@ public class TrackDAO implements ITrackDAO {
     }
 
     @Override
-    public TrackDTO removeTrackFromPlaylist(String token) {
-        return null;
+    public void removeTrackFromPlaylist(int playlistId, int trackId) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "DELETE FROM playlist_tracks WHERE playlistId = ? AND trackId = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, playlistId);
+            preparedStatement.setInt(2, trackId);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
-    public TrackDTO addTrackToPlaylist(String token) {
-        return null;
+    public void addTrackToPlaylist(int playlistId, int trackId, boolean offlineAvailable) {
+        try (Connection connection = dataSource.getConnection()) {
+            String sql = "INSERT INTO playlist_tracks (playlistId, trackId, offlineAvailable) VALUES (?, ?, ?)";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, playlistId);
+            preparedStatement.setInt(2, trackId);
+            preparedStatement.setBoolean(3, offlineAvailable);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     @Inject

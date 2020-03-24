@@ -18,17 +18,15 @@ public interface ITrackDAO {
 
     /**
      *
-     * @param token valid user token
      * @return a response containing the complete and modified list of tracks
      * @link https://github.com/aaron5670/SpotiTube#remove-a-track-from-a-playlist
      */
-    TrackDTO removeTrackFromPlaylist(String token);
+    void removeTrackFromPlaylist(int playlistId, int trackId);
 
     /**
      *
-     * @param token valid user token
      * @return a response containing the complete list of tracks for the given
      * @link https://github.com/aaron5670/SpotiTube#add-a-track-to-a-playlist
      */
-    TrackDTO addTrackToPlaylist(String token);
+    void addTrackToPlaylist(int playlistId, int trackId, boolean offlineAvailable);
 }

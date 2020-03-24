@@ -74,7 +74,7 @@ public class TracksController {
                 return Response.status(400).build();
 
             iTrackDAO.addTrackToPlaylist(playlistId, trackDTO.id, trackDTO.offlineAvailable);
-            return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
+            return Response.status(201).entity(tracksDTO(playlistId, false, token)).build();
         } catch (InternalServerErrorException e) {
             e.getStackTrace();
             return Response.status(500).build();

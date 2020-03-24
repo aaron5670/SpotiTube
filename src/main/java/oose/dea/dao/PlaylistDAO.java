@@ -5,18 +5,22 @@ import oose.dea.domain.Playlist;
 import javax.annotation.Resource;
 import javax.enterprise.inject.Default;
 import javax.sql.DataSource;
+import javax.ws.rs.InternalServerErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Default
 public class PlaylistDAO implements IPlaylistDAO {
 
     @Resource(name = "jdbc/spotitubeMySQL")
     DataSource dataSource;
+
+    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Override
     public List<Playlist> getAllPlaylists(String token) {
@@ -43,8 +47,8 @@ public class PlaylistDAO implements IPlaylistDAO {
             }
             return playlists;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
     }
 
@@ -56,7 +60,8 @@ public class PlaylistDAO implements IPlaylistDAO {
             preparedStatement.setInt(1, id);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
     }
 
@@ -69,7 +74,8 @@ public class PlaylistDAO implements IPlaylistDAO {
             preparedStatement.setString(2, username);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
     }
 
@@ -82,7 +88,8 @@ public class PlaylistDAO implements IPlaylistDAO {
             preparedStatement.setInt(2, playlistId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
     }
 }

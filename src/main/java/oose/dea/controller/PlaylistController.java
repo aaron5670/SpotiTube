@@ -4,6 +4,7 @@ import oose.dea.dao.IPlaylistDAO;
 import oose.dea.controller.dto.PlaylistDTO;
 import oose.dea.controller.dto.PlaylistsDTO;
 import oose.dea.domain.Playlist;
+import oose.dea.exceptions.TokenValidationException;
 import oose.dea.service.TokenService;
 
 import javax.inject.Inject;
@@ -12,25 +13,26 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Path("/")
 public class PlaylistController {
 
     private TokenService tokenService;
     private IPlaylistDAO iPlaylistDAO;
+    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @GET
     @Path("/playlists")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlaylists(@QueryParam("token") String token) {
         try {
-            if (!tokenService.tokenVerified(token))
-                return Response.status(400).build();
+            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
 
             return Response.status(200).entity(playlistsDTO(token)).build();
-        } catch (InternalServerErrorException e) {
-            e.getStackTrace();
-            return Response.status(500).build();
+        } catch (TokenValidationException e) {
+            LOGGER.severe(e.toString());
+            return Response.status(403).build();
         }
     }
 
@@ -39,14 +41,13 @@ public class PlaylistController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteAPlaylist(@PathParam("id") int id, @QueryParam("token") String token) {
         try {
-            if (!tokenService.tokenVerified(token))
-                return Response.status(400).build();
+            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid token");
 
             iPlaylistDAO.deleteAPlaylist(id, token);
             return Response.status(200).entity(playlistsDTO(token)).build();
-        } catch (InternalServerErrorException e) {
-            e.getStackTrace();
-            return Response.status(500).build();
+        } catch (TokenValidationException e) {
+            LOGGER.severe(e.toString());
+            return Response.status(403).build();
         }
     }
 
@@ -55,14 +56,13 @@ public class PlaylistController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response AddAPlaylist(PlaylistDTO playlistDTO, @QueryParam("token") String token) {
         try {
-            if (!tokenService.tokenVerified(token))
-                return Response.status(400).build();
+            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid token");
 
             iPlaylistDAO.addAPlaylist(playlistDTO.name, tokenService.getUsernameByToken(token), token);
-            return Response.status(200).entity(playlistsDTO(token)).build();
-        } catch (InternalServerErrorException e) {
-            e.getStackTrace();
-            return Response.status(500).build();
+            return Response.status(201).entity(playlistsDTO(token)).build();
+        } catch (TokenValidationException e) {
+            LOGGER.severe(e.toString());
+            return Response.status(403).build();
         }
     }
 
@@ -71,18 +71,17 @@ public class PlaylistController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response editAPlaylist(PlaylistDTO playlistDTO, @QueryParam("token") String token) {
         try {
-            if (!tokenService.tokenVerified(token))
-                return Response.status(400).build();
+            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid token");
 
             iPlaylistDAO.editAPlaylist(playlistDTO.name, playlistDTO.id, token);
             return Response.status(200).entity(playlistsDTO(token)).build();
-        } catch (InternalServerErrorException e) {
-            e.getStackTrace();
-            return Response.status(500).build();
+        } catch (TokenValidationException e) {
+            LOGGER.severe(e.toString());
+            return Response.status(403).build();
         }
     }
 
-    public PlaylistsDTO playlistsDTO(String token) throws InternalServerErrorException {
+    public PlaylistsDTO playlistsDTO(String token) {
         List<Playlist> playlists = iPlaylistDAO.getAllPlaylists(token);
         PlaylistsDTO playlistsDTO = new PlaylistsDTO();
         playlistsDTO.playlists = new ArrayList<>();

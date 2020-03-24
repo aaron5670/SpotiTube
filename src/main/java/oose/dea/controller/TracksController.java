@@ -4,6 +4,7 @@ import oose.dea.controller.dto.TrackDTO;
 import oose.dea.dao.ITrackDAO;
 import oose.dea.controller.dto.TracksDTO;
 import oose.dea.domain.Track;
+import oose.dea.exceptions.TokenValidationException;
 import oose.dea.service.TokenService;
 
 import javax.inject.Inject;
@@ -12,25 +13,26 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Path("/")
 public class TracksController {
 
     private TokenService tokenService;
     private ITrackDAO iTrackDAO;
+    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @GET
     @Path("/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllTracks(@QueryParam("forPlaylist") int playlistId, @QueryParam("token") String token) {
         try {
-            if (!tokenService.tokenVerified(token))
-                return Response.status(400).build();
+            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
 
             return Response.status(200).entity(tracksDTO(playlistId, true, token)).build();
-        } catch (InternalServerErrorException e) {
-            e.getStackTrace();
-            return Response.status(500).build();
+        } catch (TokenValidationException e) {
+            LOGGER.severe(e.toString());
+            return Response.status(403).build();
         }
     }
 
@@ -39,13 +41,12 @@ public class TracksController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllTracksFromPlaylist(@PathParam("playlistId") int playlistId, @QueryParam("token") String token) {
         try {
-            if (!tokenService.tokenVerified(token))
-                return Response.status(400).build();
+            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
 
             return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
-        } catch (InternalServerErrorException e) {
-            e.getStackTrace();
-            return Response.status(500).build();
+        } catch (TokenValidationException e) {
+            LOGGER.severe(e.toString());
+            return Response.status(403).build();
         }
     }
 
@@ -54,14 +55,13 @@ public class TracksController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteTrackFromPlaylist(@PathParam("playlistId") int playlistId, @PathParam("trackId") int trackId, @QueryParam("token") String token) {
         try {
-            if (!tokenService.tokenVerified(token))
-                return Response.status(400).build();
+            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
 
             iTrackDAO.removeTrackFromPlaylist(playlistId, trackId);
             return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
-        } catch (InternalServerErrorException e) {
-            e.getStackTrace();
-            return Response.status(500).build();
+        } catch (TokenValidationException e) {
+            LOGGER.severe(e.toString());
+            return Response.status(403).build();
         }
     }
 
@@ -70,14 +70,13 @@ public class TracksController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrackToPlaylist(@PathParam("playlistId") int playlistId, TrackDTO trackDTO, @QueryParam("token") String token) {
         try {
-            if (!tokenService.tokenVerified(token))
-                return Response.status(400).build();
+            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
 
             iTrackDAO.addTrackToPlaylist(playlistId, trackDTO.id, trackDTO.offlineAvailable);
             return Response.status(201).entity(tracksDTO(playlistId, false, token)).build();
-        } catch (InternalServerErrorException e) {
-            e.getStackTrace();
-            return Response.status(500).build();
+        } catch (TokenValidationException e) {
+            LOGGER.severe(e.toString());
+            return Response.status(403).build();
         }
     }
 

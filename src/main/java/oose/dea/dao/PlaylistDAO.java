@@ -18,8 +18,7 @@ import java.util.logging.Logger;
 public class PlaylistDAO implements IPlaylistDAO {
 
     @Resource(name = "jdbc/spotitubeMySQL")
-    DataSource dataSource;
-
+    private DataSource dataSource;
     private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Override
@@ -37,11 +36,11 @@ public class PlaylistDAO implements IPlaylistDAO {
                 Playlist playlist = new Playlist();
                 playlist.setId(resultSet.getInt("p.id"));
                 playlist.setName(resultSet.getString("p.name"));
-                if (resultSet.getString("t.token").equals(token)) {
+                if (resultSet.getString("t.token").equals(token))
                     playlist.setOwner(true);
-                } else {
+                 else
                     playlist.setOwner(false);
-                }
+
                 playlist.setTotalDuration(resultSet.getInt("length"));
                 playlists.add(playlist);
             }

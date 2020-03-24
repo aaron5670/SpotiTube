@@ -3,13 +3,16 @@ package oose.dea.dao;
 import javax.annotation.Resource;
 import javax.enterprise.inject.Default;
 import javax.sql.DataSource;
+import javax.ws.rs.InternalServerErrorException;
 import java.sql.*;
+import java.util.logging.Logger;
 
 @Default
 public class UserDAO implements IUserDAO {
 
     @Resource(name = "jdbc/spotitubeMySQL")
-    DataSource dataSource;
+    private DataSource dataSource;
+    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Override
     public boolean isAuthenticated(String username, String password) {
@@ -20,13 +23,12 @@ public class UserDAO implements IUserDAO {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.first()) {
+            if (resultSet.first())
                 return true;
-            }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
         return false;
     }
@@ -40,7 +42,8 @@ public class UserDAO implements IUserDAO {
             preparedStatement.setString(2, username);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
     }
 }

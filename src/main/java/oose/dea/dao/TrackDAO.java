@@ -1,6 +1,5 @@
 package oose.dea.dao;
 
-import oose.dea.controller.dto.TrackDTO;
 import oose.dea.domain.Track;
 import oose.dea.service.TokenService;
 
@@ -8,20 +7,22 @@ import javax.annotation.Resource;
 import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.sql.DataSource;
+import javax.ws.rs.InternalServerErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Default
 public class TrackDAO implements ITrackDAO {
 
-    private TokenService tokenService;
-
     @Resource(name = "jdbc/spotitubeMySQL")
-    DataSource dataSource;
+    private DataSource dataSource;
+    private TokenService tokenService;
+    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Override
     public List<Track> getAllTracks(int forPlaylist, boolean addTracks, String token) {
@@ -54,8 +55,8 @@ public class TrackDAO implements ITrackDAO {
 
             return tracks;
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
     }
 
@@ -68,7 +69,8 @@ public class TrackDAO implements ITrackDAO {
             preparedStatement.setInt(2, trackId);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
     }
 
@@ -82,7 +84,8 @@ public class TrackDAO implements ITrackDAO {
             preparedStatement.setBoolean(3, offlineAvailable);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
     }
 

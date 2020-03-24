@@ -3,16 +3,19 @@ package oose.dea.dao;
 import javax.annotation.Resource;
 import javax.enterprise.inject.Default;
 import javax.sql.DataSource;
+import javax.ws.rs.InternalServerErrorException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.logging.Logger;
 
 @Default
 public class TokenDAO implements ITokenDAO {
 
     @Resource(name = "jdbc/spotitubeMySQL")
-    DataSource dataSource;
+    private DataSource dataSource;
+    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Override
     public boolean verifyToken(String token) {
@@ -22,13 +25,12 @@ public class TokenDAO implements ITokenDAO {
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.first()) {
+            if (resultSet.first())
                 return true;
-            }
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
         return false;
     }
@@ -45,8 +47,8 @@ public class TokenDAO implements ITokenDAO {
                 return resultSet.getString("token");
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
         return null;
     }
@@ -63,8 +65,8 @@ public class TokenDAO implements ITokenDAO {
                 return resultSet.getString("username");
 
         } catch (SQLException e) {
-            e.printStackTrace();
-            return null;
+            LOGGER.severe(e.toString());
+            throw new InternalServerErrorException();
         }
         return null;
     }

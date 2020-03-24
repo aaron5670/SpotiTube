@@ -9,6 +9,12 @@ public interface ITokenDAO {
      */
     boolean verifyToken(String token);
 
+    /**
+     *
+     * @param username valid username
+     * @return current saved user token
+     */
+    String getToken(String username);
 
     /**
      *

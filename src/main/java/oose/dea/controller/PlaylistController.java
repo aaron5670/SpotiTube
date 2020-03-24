@@ -27,7 +27,7 @@ public class PlaylistController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlaylists(@QueryParam("token") String token) {
         try {
-            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
+            //if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
 
             return Response.status(200).entity(playlistsDTO(token)).build();
         } catch (TokenValidationException e) {

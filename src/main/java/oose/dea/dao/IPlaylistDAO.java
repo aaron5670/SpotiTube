@@ -24,6 +24,8 @@ public interface IPlaylistDAO {
 
     /**
      *
+     * @param playlistName valid playlistName
+     * @param username valid username
      * @param token valid user token
      * @link https://github.com/aaron5670/SpotiTube#add-a-playlist
      */
@@ -31,6 +33,8 @@ public interface IPlaylistDAO {
 
     /**
      *
+     * @param playlistName valid playlistName
+     * @param playlistId valid playlistId
      * @param token valid user token
      * @link https://github.com/aaron5670/SpotiTube#edit-a-playlist
      */

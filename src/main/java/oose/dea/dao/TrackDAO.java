@@ -28,7 +28,7 @@ public class TrackDAO implements ITrackDAO {
         try (Connection connection = dataSource.getConnection()) {
             String sql;
             if (addTracks) {
-                sql = "SELECT * FROM tracks LEFT JOIN playlist_tracks pt ON tracks.id = pt.trackId WHERE pt.playlistId != ? OR pt.playlistId IS NULL";
+                sql = "SELECT * FROM tracks LEFT JOIN playlist_tracks pt ON tracks.id = pt.trackId WHERE tracks.id NOT IN (SELECT trackid FROM playlist_tracks WHERE playlistid = ?)";
             } else {
                 sql = "SELECT * FROM tracks LEFT JOIN playlist_tracks pt ON tracks.id = pt.trackId WHERE pt.playlistId = ?";
             }

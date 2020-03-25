@@ -20,64 +20,48 @@ public class TracksController {
 
     private TokenService tokenService;
     private ITrackDAO iTrackDAO;
-    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @GET
     @Path("/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllTracks(@QueryParam("forPlaylist") int playlistId, @QueryParam("token") String token) {
-        try {
-            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
-
-            return Response.status(200).entity(tracksDTO(playlistId, true, token)).build();
-        } catch (TokenValidationException e) {
-            LOGGER.severe(e.toString());
+        if (!tokenService.tokenVerified(token))
             return Response.status(403).build();
-        }
+
+        return Response.status(200).entity(tracksDTO(playlistId, true, token)).build();
     }
 
     @GET
     @Path("/playlists/{playlistId}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllTracksFromPlaylist(@PathParam("playlistId") int playlistId, @QueryParam("token") String token) {
-        try {
-            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
-
-            return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
-        } catch (TokenValidationException e) {
-            LOGGER.severe(e.toString());
+        if (!tokenService.tokenVerified(token))
             return Response.status(403).build();
-        }
+
+        return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
     }
 
     @DELETE
     @Path("/playlists/{playlistId}/tracks/{trackId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteTrackFromPlaylist(@PathParam("playlistId") int playlistId, @PathParam("trackId") int trackId, @QueryParam("token") String token) {
-        try {
-            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
 
-            iTrackDAO.removeTrackFromPlaylist(playlistId, trackId);
-            return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
-        } catch (TokenValidationException e) {
-            LOGGER.severe(e.toString());
+        if (!tokenService.tokenVerified(token))
             return Response.status(403).build();
-        }
+
+        iTrackDAO.removeTrackFromPlaylist(playlistId, trackId);
+        return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
     }
 
     @POST
     @Path("/playlists/{playlistId}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrackToPlaylist(@PathParam("playlistId") int playlistId, TrackDTO trackDTO, @QueryParam("token") String token) {
-        try {
-            if (!tokenService.tokenVerified(token)) throw new TokenValidationException("Invalid user token");
-
-            iTrackDAO.addTrackToPlaylist(playlistId, trackDTO.id, trackDTO.offlineAvailable);
-            return Response.status(201).entity(tracksDTO(playlistId, false, token)).build();
-        } catch (TokenValidationException e) {
-            LOGGER.severe(e.toString());
+        if (!tokenService.tokenVerified(token))
             return Response.status(403).build();
-        }
+
+        iTrackDAO.addTrackToPlaylist(playlistId, trackDTO.id, trackDTO.offlineAvailable);
+        return Response.status(201).entity(tracksDTO(playlistId, false, token)).build();
     }
 
     public TracksDTO tracksDTO(int forPlaylist, boolean addTracks, String token) {

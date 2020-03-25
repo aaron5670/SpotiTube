@@ -23,14 +23,12 @@ public class UserDAO implements IUserDAO {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.first())
-                return true;
+            return resultSet.first();
 
         } catch (SQLException e) {
             LOGGER.severe(e.toString());
             throw new InternalServerErrorException();
         }
-        return false;
     }
 
     @Override

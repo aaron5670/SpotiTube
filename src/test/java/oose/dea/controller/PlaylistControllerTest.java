@@ -25,8 +25,8 @@ public class PlaylistControllerTest {
     public static PlaylistController sut;
     public static TokenService service;
     private static IPlaylistDAO iPlaylistDAO;
-    private static PlaylistDTO playlistDTO;
     private static PlaylistsDTO playlistsDTO;
+    private static PlaylistDTO playlistDTO;
 
     @BeforeAll
     public static void setup() {

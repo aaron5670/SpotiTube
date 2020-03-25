@@ -43,7 +43,7 @@ public class PlaylistController {
     @POST
     @Path("/playlists")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response AddAPlaylist(PlaylistDTO playlistDTO, @QueryParam("token") String token) {
+    public Response addAPlaylist(PlaylistDTO playlistDTO, @QueryParam("token") String token) {
         if (!tokenService.tokenVerified(token))
             return Response.status(403).build();
 

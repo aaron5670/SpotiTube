@@ -93,4 +93,8 @@ public class TrackDAO implements ITrackDAO {
     public void setTokenService(TokenService tokenService) {
         this.tokenService = tokenService;
     }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
+    }
 }

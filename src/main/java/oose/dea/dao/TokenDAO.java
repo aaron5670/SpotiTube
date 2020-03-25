@@ -25,14 +25,12 @@ public class TokenDAO implements ITokenDAO {
             preparedStatement.setString(1, token);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.first())
-                return true;
+            return resultSet.first();
 
         } catch (SQLException e) {
             LOGGER.severe(e.toString());
             throw new InternalServerErrorException();
         }
-        return false;
     }
 
     @Override
@@ -45,12 +43,13 @@ public class TokenDAO implements ITokenDAO {
 
             if (resultSet.first())
                 return resultSet.getString("token");
+            else
+                return null;
 
         } catch (SQLException e) {
             LOGGER.severe(e.toString());
             throw new InternalServerErrorException();
         }
-        return null;
     }
 
     @Override
@@ -63,11 +62,16 @@ public class TokenDAO implements ITokenDAO {
 
             if (resultSet.first())
                 return resultSet.getString("username");
+            else
+                return null;
 
         } catch (SQLException e) {
             LOGGER.severe(e.toString());
             throw new InternalServerErrorException();
         }
-        return null;
+    }
+
+    public void setDataSource(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 }

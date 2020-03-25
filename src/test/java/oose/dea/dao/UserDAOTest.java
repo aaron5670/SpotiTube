@@ -16,7 +16,7 @@ public class UserDAOTest {
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
     public static final String TOKEN = "123-456-789";
-    private static UserDAO userDAO;
+    private static UserDAO sut;
 
     private static DataSource dataSource;
     private static Connection connection;
@@ -27,7 +27,7 @@ public class UserDAOTest {
 
     @BeforeEach
     public void setup() {
-        userDAO = new UserDAO();
+        sut = new UserDAO();
 
         dataSource = mock(DataSource.class);
         connection = mock(Connection.class);
@@ -47,14 +47,16 @@ public class UserDAOTest {
             when(resultSet.first()).thenReturn(true);
 
             // Act
-            userDAO.setDataSource(dataSource);
-            boolean actual = userDAO.isAuthenticated(USERNAME, PASSWORD);
+            sut.setDataSource(dataSource);
+            boolean actual = sut.isAuthenticated(USERNAME, PASSWORD);
 
             // Assert
             assertTrue(actual);
 
             verify(dataSource).getConnection();
             verify(connection).prepareStatement(expectedSQL);
+            verify(preparedStatement).setString(1, USERNAME);
+            verify(preparedStatement).setString(2, PASSWORD);
             verify(preparedStatement).executeQuery();
         } catch (Exception e) {
             fail();
@@ -69,12 +71,12 @@ public class UserDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            userDAO.setDataSource(dataSource);
-            userDAO.isAuthenticated(USERNAME, PASSWORD);
+            sut.setDataSource(dataSource);
+            sut.isAuthenticated(USERNAME, PASSWORD);
 
             // Assert
             assertThrows(SQLException.class, () -> {
-                        userDAO.isAuthenticated(USERNAME, PASSWORD);
+                        sut.isAuthenticated(USERNAME, PASSWORD);
                     }
             );
         } catch (Exception e) {
@@ -92,8 +94,8 @@ public class UserDAOTest {
             when(connection.prepareStatement(expectedSQL)).thenReturn(preparedStatement);
 
             // Act
-            userDAO.setDataSource(dataSource);
-            userDAO.updateUserTokenInDatabase(USERNAME, TOKEN);
+            sut.setDataSource(dataSource);
+            sut.updateUserTokenInDatabase(USERNAME, TOKEN);
 
             // Assert
             verify(dataSource).getConnection();
@@ -114,12 +116,12 @@ public class UserDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            userDAO.setDataSource(dataSource);
-            userDAO.updateUserTokenInDatabase(USERNAME, TOKEN);
+            sut.setDataSource(dataSource);
+            sut.updateUserTokenInDatabase(USERNAME, TOKEN);
 
             // Assert
             assertThrows(SQLException.class, () -> {
-                        userDAO.updateUserTokenInDatabase(USERNAME, TOKEN);
+                        sut.updateUserTokenInDatabase(USERNAME, TOKEN);
                     }
             );
         } catch (Exception e) {

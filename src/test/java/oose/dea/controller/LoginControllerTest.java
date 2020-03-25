@@ -15,8 +15,9 @@ import static org.mockito.Mockito.when;
 
 public class LoginControllerTest {
 
-    public static final String USER = "user";
+    public static final String USERNAME = "user";
     public static final String PASSWORD = "password";
+    public static final String TOKEN = "123-456-789";
 
     public static LoginController sut;
     public static LoginService service;
@@ -24,18 +25,17 @@ public class LoginControllerTest {
     @BeforeAll
     public static void setup() {
         sut = new LoginController();
+        service = Mockito.mock(LoginService.class);
+        sut.setLoginService(service);
     }
 
     @Test
     void loginWithInvalidCredentialsRespondsWith401() {
         // Arrange
-        service = Mockito.mock(LoginService.class);
-        sut.setLoginService(service);
-
-        when(service.login(USER, PASSWORD)).thenReturn(null);
+        when(service.login(USERNAME, PASSWORD)).thenReturn(null);
 
         LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
-        loginRequestDTO.user = USER;
+        loginRequestDTO.user = USERNAME;
         loginRequestDTO.password = PASSWORD;
 
         // Act
@@ -48,14 +48,12 @@ public class LoginControllerTest {
     @Test
     void loginWithValidCredentialsRespondsWith200() {
         // Arrange
-        service = Mockito.mock(LoginService.class);
-        sut.setLoginService(service);
-        TokenDTO tokenDTO = new TokenDTO(USER, "123-456-789");
+        TokenDTO tokenDTO = new TokenDTO(USERNAME, TOKEN);
 
-        when(service.login(USER, PASSWORD)).thenReturn(tokenDTO);
+        when(service.login(USERNAME, PASSWORD)).thenReturn(tokenDTO);
 
         LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
-        loginRequestDTO.user = USER;
+        loginRequestDTO.user = USERNAME;
         loginRequestDTO.password = PASSWORD;
 
         // Act
@@ -73,13 +71,13 @@ public class LoginControllerTest {
         sut.setLoginService(service);
 
         LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
-        loginRequestDTO.user = USER;
+        loginRequestDTO.user = USERNAME;
         loginRequestDTO.password = PASSWORD;
 
         // Act
         sut.login(loginRequestDTO);
 
         // Assert
-        verify(service).login(USER, PASSWORD);
+        verify(service).login(USERNAME, PASSWORD);
     }
 }

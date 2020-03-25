@@ -8,13 +8,11 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.logging.Logger;
 
 @Path("login")
 public class LoginController {
 
     private LoginService loginService;
-    private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)

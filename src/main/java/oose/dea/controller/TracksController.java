@@ -4,7 +4,6 @@ import oose.dea.controller.dto.TrackDTO;
 import oose.dea.dao.ITrackDAO;
 import oose.dea.controller.dto.TracksDTO;
 import oose.dea.domain.Track;
-import oose.dea.exceptions.TokenValidationException;
 import oose.dea.service.TokenService;
 
 import javax.inject.Inject;
@@ -13,7 +12,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
 
 @Path("/")
 public class TracksController {

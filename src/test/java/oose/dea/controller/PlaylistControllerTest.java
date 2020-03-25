@@ -1,6 +1,5 @@
 package oose.dea.controller;
 
-import oose.dea.service.LoginService;
 import oose.dea.service.TokenService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

@@ -3,28 +3,33 @@ package oose.dea.service;
 import oose.dea.controller.dto.TokenDTO;
 import oose.dea.dao.IUserDAO;
 import oose.dea.util.TokenGenerator;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class LoginServiceTest {
 
     public static final String USERNAME = "aaron";
     public static final String PASSWORD = "password";
 
+    @InjectMocks
     public static LoginService sut;
+
+    @Mock
     public static IUserDAO iUserDAO;
+
+    @Mock
     public static TokenGenerator tokenGenerator;
 
-    @BeforeAll
-    public static void setup() {
-        sut = new LoginService();
-        iUserDAO = Mockito.mock(IUserDAO.class);
-        sut.setiUserDAO(iUserDAO);
+    @BeforeEach
+    public void setup() {
+        initMocks(this);
     }
 
     @Test
@@ -36,18 +41,17 @@ public class LoginServiceTest {
         TokenDTO actual = sut.login(USERNAME, PASSWORD);
 
         // Assert
-        Assertions.assertNull(actual);
+        assertNull(actual);
     }
 
     @Test
     public void updateUserTokenInDatabase() {
         // Arrange
         when(iUserDAO.isAuthenticated(USERNAME, PASSWORD)).thenReturn(true);
-        tokenGenerator = new TokenGenerator();
         String token = tokenGenerator.generateToken();
 
         // Act
-        iUserDAO.updateUserTokenInDatabase(USERNAME, token);
+        sut.login(USERNAME, PASSWORD);
 
         // Assert
         verify(iUserDAO).updateUserTokenInDatabase(USERNAME, token);

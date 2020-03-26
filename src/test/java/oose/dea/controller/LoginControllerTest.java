@@ -7,13 +7,15 @@ import oose.dea.service.LoginService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import javax.ws.rs.core.Response;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class LoginControllerTest {
 
@@ -21,14 +23,15 @@ public class LoginControllerTest {
     public static final String PASSWORD = "password";
     public static final String TOKEN = "123-456-789";
 
+    @InjectMocks
     public static LoginController sut;
+
+    @Mock
     public static LoginService service;
 
     @BeforeEach
     public void setup() {
-        sut = new LoginController();
-        service = Mockito.mock(LoginService.class);
-        sut.setLoginService(service);
+        initMocks(this);
     }
 
     @Test
@@ -75,7 +78,6 @@ public class LoginControllerTest {
         loginRequestDTO.password = PASSWORD;
 
         // Act
-        sut.setLoginService(service);
         sut.login(loginRequestDTO);
 
         // Assert

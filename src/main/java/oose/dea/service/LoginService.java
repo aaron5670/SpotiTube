@@ -8,8 +8,10 @@ import javax.inject.Inject;
 
 public class LoginService {
 
-    private TokenGenerator tokenGenerator = new TokenGenerator();
+    @Inject
     private IUserDAO iUserDAO;
+
+    private TokenGenerator tokenGenerator = new TokenGenerator();
 
     public TokenDTO login(String username, String password) {
         if (!iUserDAO.isAuthenticated(username, password))
@@ -20,10 +22,5 @@ public class LoginService {
         iUserDAO.updateUserTokenInDatabase(username, token);
 
         return tokenDTO;
-    }
-
-    @Inject
-    public void setiUserDAO(IUserDAO iUserDAO) {
-        this.iUserDAO = iUserDAO;
     }
 }

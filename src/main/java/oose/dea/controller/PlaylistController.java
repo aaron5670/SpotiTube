@@ -16,7 +16,10 @@ import java.util.List;
 @Path("/")
 public class PlaylistController {
 
+    @Inject
     private TokenService tokenService;
+
+    @Inject
     private IPlaylistDAO iPlaylistDAO;
 
     @GET
@@ -75,15 +78,5 @@ public class PlaylistController {
 
         playlistsDTO.length = length;
         return playlistsDTO;
-    }
-
-    @Inject
-    public void setTokenService(TokenService tokenService) {
-        this.tokenService = tokenService;
-    }
-
-    @Inject
-    public void setiPlaylistDAO(IPlaylistDAO iPlaylistDAO) {
-        this.iPlaylistDAO = iPlaylistDAO;
     }
 }

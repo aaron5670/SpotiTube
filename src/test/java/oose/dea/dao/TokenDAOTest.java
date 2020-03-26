@@ -2,6 +2,8 @@ package oose.dea.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -11,28 +13,32 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class TokenDAOTest {
     public static final String USERNAME = "aaron";
     public static final String TOKEN = "123-456-789";
 
+    @InjectMocks
     private static TokenDAO sut;
 
+    @Mock
     private static DataSource dataSource;
+
+    @Mock
     private static Connection connection;
+
+    @Mock
     private static PreparedStatement preparedStatement;
+
+    @Mock
     private static ResultSet resultSet;
 
     private String expectedSQL;
 
     @BeforeEach
     public void setup() {
-        sut = new TokenDAO();
-
-        dataSource = mock(DataSource.class);
-        connection = mock(Connection.class);
-        preparedStatement = mock(PreparedStatement.class);
-        resultSet = mock(ResultSet.class);
+        initMocks(this);
     }
 
     @Test
@@ -47,7 +53,6 @@ public class TokenDAOTest {
             when(resultSet.first()).thenReturn(true);
 
             // Act
-            sut.setDataSource(dataSource);
             boolean actual = sut.verifyToken(TOKEN);
 
             // Assert
@@ -70,7 +75,6 @@ public class TokenDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.verifyToken(TOKEN);
 
             // Assert
@@ -96,7 +100,6 @@ public class TokenDAOTest {
             when(resultSet.getString("token")).thenReturn(TOKEN);
 
             // Act
-            sut.setDataSource(dataSource);
             String actual = sut.getToken(USERNAME);
 
             // Assert
@@ -124,7 +127,6 @@ public class TokenDAOTest {
             when(resultSet.first()).thenReturn(false);
 
             // Act
-            sut.setDataSource(dataSource);
             String actual = sut.getToken(USERNAME);
 
             // Assert
@@ -147,7 +149,6 @@ public class TokenDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.getToken(USERNAME);
 
             // Assert
@@ -173,7 +174,6 @@ public class TokenDAOTest {
             when(resultSet.getString("username")).thenReturn(USERNAME);
 
             // Act
-            sut.setDataSource(dataSource);
             String actual = sut.getUsername(TOKEN);
 
             // Assert
@@ -201,7 +201,6 @@ public class TokenDAOTest {
             when(resultSet.first()).thenReturn(false);
 
             // Act
-            sut.setDataSource(dataSource);
             String actual = sut.getUsername(TOKEN);
 
             // Assert
@@ -224,7 +223,6 @@ public class TokenDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.getUsername(TOKEN);
 
             // Assert

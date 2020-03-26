@@ -8,6 +8,8 @@ import oose.dea.exceptions.ForbiddenException;
 import oose.dea.service.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import javax.ws.rs.core.Response;
 
@@ -16,35 +18,37 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PlaylistControllerTest {
 
     public static final String TOKEN = "123-456-789";
     public static final int PLAYLIST_ID = 1;
 
+    @InjectMocks
     public static PlaylistController sut;
+
+    @Mock
     public static TokenService service;
+
+    @Mock
     private static IPlaylistDAO iPlaylistDAO;
+
+    @Mock
     private static PlaylistsDTO playlistsDTO;
+
+    @Mock
     private static PlaylistDTO playlistDTO;
 
     @BeforeEach
     public void setup() {
-        sut = new PlaylistController();
-        service = mock(TokenService.class);
-        iPlaylistDAO = mock(IPlaylistDAO.class);
+        initMocks(this);
 
-        sut.setTokenService(service);
-        sut.setiPlaylistDAO(iPlaylistDAO);
-
-        playlistDTO = new PlaylistDTO();
         playlistDTO.id = 1;
         playlistDTO.name = "HipHop playlist";
         playlistDTO.owner = true;
 
-        playlistsDTO = new PlaylistsDTO();
         playlistsDTO.playlists = new ArrayList<>();
         playlistsDTO.playlists.add(playlistDTO);
         playlistsDTO.length = 500;
@@ -143,7 +147,7 @@ public class PlaylistControllerTest {
     }
 
     @Test
-    public void playlistDTOReturnsSinglePlaylist(){
+    public void playlistDTOReturnsSinglePlaylist() {
         // Arrange
         List<Playlist> playlistList = new ArrayList<>();
 

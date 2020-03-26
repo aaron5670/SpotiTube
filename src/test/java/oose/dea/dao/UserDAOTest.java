@@ -2,6 +2,8 @@ package oose.dea.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -11,28 +13,33 @@ import java.sql.SQLException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class UserDAOTest {
     public static final String USERNAME = "aaron";
     public static final String PASSWORD = "password";
     public static final String TOKEN = "123-456-789";
+
+    @InjectMocks
     private static UserDAO sut;
 
+    @Mock
     private static DataSource dataSource;
+
+    @Mock
     private static Connection connection;
+
+    @Mock
     private static PreparedStatement preparedStatement;
+
+    @Mock
     private static ResultSet resultSet;
 
     private String expectedSQL;
 
     @BeforeEach
     public void setup() {
-        sut = new UserDAO();
-
-        dataSource = mock(DataSource.class);
-        connection = mock(Connection.class);
-        preparedStatement = mock(PreparedStatement.class);
-        resultSet = mock(ResultSet.class);
+        initMocks(this);
     }
 
     @Test
@@ -47,7 +54,6 @@ public class UserDAOTest {
             when(resultSet.first()).thenReturn(true);
 
             // Act
-            sut.setDataSource(dataSource);
             boolean actual = sut.isAuthenticated(USERNAME, PASSWORD);
 
             // Assert
@@ -71,7 +77,6 @@ public class UserDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.isAuthenticated(USERNAME, PASSWORD);
 
             // Assert
@@ -94,7 +99,6 @@ public class UserDAOTest {
             when(connection.prepareStatement(expectedSQL)).thenReturn(preparedStatement);
 
             // Act
-            sut.setDataSource(dataSource);
             sut.updateUserTokenInDatabase(USERNAME, TOKEN);
 
             // Assert
@@ -116,7 +120,6 @@ public class UserDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.updateUserTokenInDatabase(USERNAME, TOKEN);
 
             // Assert

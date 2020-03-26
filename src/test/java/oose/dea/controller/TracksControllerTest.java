@@ -8,6 +8,8 @@ import oose.dea.exceptions.ForbiddenException;
 import oose.dea.service.TokenService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -15,8 +17,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class TracksControllerTest {
 
@@ -24,21 +26,21 @@ public class TracksControllerTest {
     public static final int PLAYLIST_ID = 1;
     public static final int TRACK_ID = 1;
 
+    @InjectMocks
     public static TracksController sut;
+
+    @Mock
     public static TokenService service;
+
+    @Mock
     private static ITrackDAO iTrackDAO;
+
+    @Mock
     private static TrackDTO trackDTO;
 
     @BeforeEach
     public void setup() {
-        sut = new TracksController();
-        service = mock(TokenService.class);
-        iTrackDAO = mock(ITrackDAO.class);
-
-        sut.setTokenService(service);
-        sut.setiTrackDAO(iTrackDAO);
-
-        trackDTO = new TrackDTO();
+        initMocks(this);
     }
 
     @Test

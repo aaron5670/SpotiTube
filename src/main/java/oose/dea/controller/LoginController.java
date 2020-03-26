@@ -13,6 +13,7 @@ import javax.ws.rs.core.Response;
 @Path("login")
 public class LoginController {
 
+    @Inject
     private LoginService loginService;
 
     @POST
@@ -23,10 +24,5 @@ public class LoginController {
         if (token == null) throw new UnauthorizedException("Invalid credentials");
 
         return Response.status(200).entity(token).build();
-    }
-
-    @Inject
-    public void setLoginService(LoginService loginService) {
-        this.loginService = loginService;
     }
 }

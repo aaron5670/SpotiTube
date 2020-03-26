@@ -16,7 +16,10 @@ import java.util.List;
 @Path("/")
 public class TracksController {
 
+    @Inject
     private TokenService tokenService;
+
+    @Inject
     private ITrackDAO iTrackDAO;
 
     @GET
@@ -77,15 +80,5 @@ public class TracksController {
             tracksDTO.tracks.add(trackDTO);
         }
         return tracksDTO;
-    }
-
-    @Inject
-    public void setTokenService(TokenService tokenService) {
-        this.tokenService = tokenService;
-    }
-
-    @Inject
-    public void setiTrackDAO(ITrackDAO iTrackDAO) {
-        this.iTrackDAO = iTrackDAO;
     }
 }

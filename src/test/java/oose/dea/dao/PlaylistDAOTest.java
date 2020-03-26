@@ -3,6 +3,8 @@ package oose.dea.dao;
 import oose.dea.domain.Playlist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -13,6 +15,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PlaylistDAOTest {
     public static final String TOKEN = "123-456-789";
@@ -20,23 +23,26 @@ public class PlaylistDAOTest {
     public static final String PLAYLIST_NAME = "HipHop Playlist";
     public static final String USERNAME = "aaron";
 
+    @InjectMocks
     private static PlaylistDAO sut;
 
+    @Mock
     private static DataSource dataSource;
+
+    @Mock
     private static Connection connection;
+
+    @Mock
     private static PreparedStatement preparedStatement;
+
+    @Mock
     private static ResultSet resultSet;
 
     private String expectedSQL;
 
     @BeforeEach
     public void setup() {
-        sut = new PlaylistDAO();
-
-        dataSource = mock(DataSource.class);
-        connection = mock(Connection.class);
-        preparedStatement = mock(PreparedStatement.class);
-        resultSet = mock(ResultSet.class);
+        initMocks(this);
     }
 
     @Test
@@ -55,8 +61,6 @@ public class PlaylistDAOTest {
 
             int id = 13;
             String songname = "The weekend";
-
-            sut.setDataSource(dataSource);
 
             List<Playlist> playlistList = sut.getAllPlaylists(TOKEN);
 
@@ -92,7 +96,6 @@ public class PlaylistDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.getAllPlaylists(TOKEN);
 
             // Assert
@@ -115,7 +118,6 @@ public class PlaylistDAOTest {
             when(connection.prepareStatement(expectedSQL)).thenReturn(preparedStatement);
 
             // Act
-            sut.setDataSource(dataSource);
             sut.deleteAPlaylist(PLAYLIST_ID, TOKEN);
 
             // Assert
@@ -135,7 +137,6 @@ public class PlaylistDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.deleteAPlaylist(PLAYLIST_ID, TOKEN);
 
             // Assert
@@ -157,7 +158,6 @@ public class PlaylistDAOTest {
             when(connection.prepareStatement(expectedSQL)).thenReturn(preparedStatement);
 
             // Act
-            sut.setDataSource(dataSource);
             sut.addAPlaylist(PLAYLIST_NAME, USERNAME, TOKEN);
 
             // Assert
@@ -178,7 +178,6 @@ public class PlaylistDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.addAPlaylist(PLAYLIST_NAME, USERNAME, TOKEN);
 
             // Assert
@@ -200,7 +199,6 @@ public class PlaylistDAOTest {
             when(connection.prepareStatement(expectedSQL)).thenReturn(preparedStatement);
 
             // Act
-            sut.setDataSource(dataSource);
             sut.editAPlaylist(PLAYLIST_NAME, PLAYLIST_ID, TOKEN);
 
             // Assert
@@ -221,7 +219,6 @@ public class PlaylistDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.editAPlaylist(PLAYLIST_NAME, PLAYLIST_ID, TOKEN);
 
             // Assert

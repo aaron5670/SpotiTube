@@ -3,6 +3,8 @@ package oose.dea.dao;
 import oose.dea.domain.Track;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -13,9 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
-import static org.mockito.BDDMockito.then;
 import static org.mockito.Mockito.*;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 public class TrackDAOTest {
     public static final String TOKEN = "123-456-789";
@@ -26,26 +27,27 @@ public class TrackDAOTest {
     public static final int TRACK_DURATION = 200;
     public static final String TRACK_DESCRIPTION = "Song about Blinding Lights";
 
-
+    @InjectMocks
     private static TrackDAO sut;
 
+    @Mock
     private static DataSource dataSource;
+
+    @Mock
     private static Connection connection;
+
+    @Mock
     private static PreparedStatement preparedStatement;
+
+    @Mock
     private static ResultSet resultSet;
 
     private String expectedSQL;
 
     @BeforeEach
     public void setup() {
-        sut = new TrackDAO();
-
-        dataSource = mock(DataSource.class);
-        connection = mock(Connection.class);
-        preparedStatement = mock(PreparedStatement.class);
-        resultSet = mock(ResultSet.class);
+        initMocks(this);
     }
-
 
     @Test
     public void getAllTrackTest() {
@@ -67,7 +69,6 @@ public class TrackDAOTest {
             when(resultSet.getString("description")).thenReturn(TRACK_DESCRIPTION);
 
             // Act
-            sut.setDataSource(dataSource);
             List<Track> actual = sut.getAllTracks(PLAYLIST_ID, true, TOKEN);
 
             List<Track> tracks = new ArrayList<>();
@@ -101,7 +102,6 @@ public class TrackDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.getAllTracks(PLAYLIST_ID, true, TOKEN);
 
             // Assert
@@ -124,7 +124,6 @@ public class TrackDAOTest {
             when(connection.prepareStatement(expectedSQL)).thenReturn(preparedStatement);
 
             // Act
-            sut.setDataSource(dataSource);
             sut.removeTrackFromPlaylist(PLAYLIST_ID, TRACK_ID);
 
             // Assert
@@ -145,7 +144,6 @@ public class TrackDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.removeTrackFromPlaylist(PLAYLIST_ID, TRACK_ID);
 
             // Assert
@@ -167,7 +165,6 @@ public class TrackDAOTest {
             when(connection.prepareStatement(expectedSQL)).thenReturn(preparedStatement);
 
             // Act
-            sut.setDataSource(dataSource);
             sut.addTrackToPlaylist(PLAYLIST_ID, TRACK_ID, true);
 
             // Assert
@@ -189,7 +186,6 @@ public class TrackDAOTest {
             when(dataSource.getConnection()).thenThrow(new SQLException());
 
             // Act
-            sut.setDataSource(dataSource);
             sut.addTrackToPlaylist(PLAYLIST_ID, TRACK_ID, true);
 
             // Assert

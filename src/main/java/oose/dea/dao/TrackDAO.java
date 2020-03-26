@@ -1,11 +1,9 @@
 package oose.dea.dao;
 
 import oose.dea.domain.Track;
-import oose.dea.service.TokenService;
 
 import javax.annotation.Resource;
 import javax.enterprise.inject.Default;
-import javax.inject.Inject;
 import javax.sql.DataSource;
 import javax.ws.rs.InternalServerErrorException;
 import java.sql.Connection;
@@ -21,7 +19,6 @@ public class TrackDAO implements ITrackDAO {
 
     @Resource(name = "jdbc/spotitubeMySQL")
     private DataSource dataSource;
-    private TokenService tokenService;
     private Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @Override
@@ -87,11 +84,6 @@ public class TrackDAO implements ITrackDAO {
             LOGGER.severe(e.toString());
             throw new InternalServerErrorException();
         }
-    }
-
-    @Inject
-    public void setTokenService(TokenService tokenService) {
-        this.tokenService = tokenService;
     }
 
     public void setDataSource(DataSource dataSource) {

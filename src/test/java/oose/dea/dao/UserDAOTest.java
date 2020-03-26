@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class UserDAOTest {
-    public static final String USERNAME = "username";
+    public static final String USERNAME = "aaron";
     public static final String PASSWORD = "password";
     public static final String TOKEN = "123-456-789";
     private static UserDAO sut;

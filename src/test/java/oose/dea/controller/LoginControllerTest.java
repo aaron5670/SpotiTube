@@ -15,7 +15,7 @@ import static org.mockito.Mockito.when;
 
 public class LoginControllerTest {
 
-    public static final String USERNAME = "user";
+    public static final String USERNAME = "aaron";
     public static final String PASSWORD = "password";
     public static final String TOKEN = "123-456-789";
 

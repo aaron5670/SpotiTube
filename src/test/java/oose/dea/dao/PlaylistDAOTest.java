@@ -3,7 +3,6 @@ package oose.dea.dao;
 import oose.dea.domain.Playlist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -94,7 +93,7 @@ public class PlaylistDAOTest {
 
             // Act
             sut.setDataSource(dataSource);
-            List<Playlist> playlists = sut.getAllPlaylists(TOKEN);
+            sut.getAllPlaylists(TOKEN);
 
             // Assert
             assertThrows(SQLException.class, () -> {

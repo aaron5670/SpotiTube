@@ -13,7 +13,7 @@ import static org.mockito.Mockito.when;
 
 public class LoginServiceTest {
 
-    public static final String USERNAME = "user";
+    public static final String USERNAME = "aaron";
     public static final String PASSWORD = "password";
 
     public static LoginService sut;

@@ -23,8 +23,7 @@ public class TracksController {
     @Path("/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllTracks(@QueryParam("forPlaylist") int playlistId, @QueryParam("token") String token) {
-        if (!tokenService.tokenVerified(token))
-            return Response.status(403).build();
+        if (!tokenService.tokenVerified(token)) throw new ForbiddenException("Invalid user token");
 
         return Response.status(200).entity(tracksDTO(playlistId, true, token)).build();
     }
@@ -33,8 +32,7 @@ public class TracksController {
     @Path("/playlists/{playlistId}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllTracksFromPlaylist(@PathParam("playlistId") int playlistId, @QueryParam("token") String token) {
-        if (!tokenService.tokenVerified(token))
-            return Response.status(403).build();
+        if (!tokenService.tokenVerified(token)) throw new ForbiddenException("Invalid user token");
 
         return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
     }
@@ -43,9 +41,7 @@ public class TracksController {
     @Path("/playlists/{playlistId}/tracks/{trackId}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteTrackFromPlaylist(@PathParam("playlistId") int playlistId, @PathParam("trackId") int trackId, @QueryParam("token") String token) {
-
-        if (!tokenService.tokenVerified(token))
-            return Response.status(403).build();
+        if (!tokenService.tokenVerified(token)) throw new ForbiddenException("Invalid user token");
 
         iTrackDAO.removeTrackFromPlaylist(playlistId, trackId);
         return Response.status(200).entity(tracksDTO(playlistId, false, token)).build();
@@ -55,8 +51,7 @@ public class TracksController {
     @Path("/playlists/{playlistId}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrackToPlaylist(@PathParam("playlistId") int playlistId, TrackDTO trackDTO, @QueryParam("token") String token) {
-        if (!tokenService.tokenVerified(token))
-            return Response.status(403).build();
+        if (!tokenService.tokenVerified(token)) throw new ForbiddenException("Invalid user token");
 
         iTrackDAO.addTrackToPlaylist(playlistId, trackDTO.id, trackDTO.offlineAvailable);
         return Response.status(201).entity(tracksDTO(playlistId, false, token)).build();

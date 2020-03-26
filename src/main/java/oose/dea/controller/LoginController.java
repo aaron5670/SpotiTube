@@ -2,6 +2,7 @@ package oose.dea.controller;
 
 import oose.dea.controller.dto.TokenDTO;
 import oose.dea.controller.dto.LoginRequestDTO;
+import oose.dea.exceptions.UnauthorizedException;
 import oose.dea.service.LoginService;
 
 import javax.inject.Inject;
@@ -19,8 +20,7 @@ public class LoginController {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(LoginRequestDTO loginRequestDTO) {
         TokenDTO token = loginService.login(loginRequestDTO.user, loginRequestDTO.password);
-        if (token == null)
-            return Response.status(401).build();
+        if (token == null) throw new UnauthorizedException("Invalid credentials");
 
         return Response.status(200).entity(token).build();
     }

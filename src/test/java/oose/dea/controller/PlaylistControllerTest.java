@@ -4,8 +4,9 @@ import oose.dea.controller.dto.PlaylistDTO;
 import oose.dea.controller.dto.PlaylistsDTO;
 import oose.dea.dao.IPlaylistDAO;
 import oose.dea.domain.Playlist;
+import oose.dea.exceptions.ForbiddenException;
 import oose.dea.service.TokenService;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -28,8 +30,8 @@ public class PlaylistControllerTest {
     private static PlaylistsDTO playlistsDTO;
     private static PlaylistDTO playlistDTO;
 
-    @BeforeAll
-    public static void setup() {
+    @BeforeEach
+    public void setup() {
         sut = new PlaylistController();
         service = mock(TokenService.class);
         iPlaylistDAO = mock(IPlaylistDAO.class);
@@ -49,15 +51,14 @@ public class PlaylistControllerTest {
     }
 
     @Test
-    public void getAllPlaylistsReturnsWith403() {
+    public void getAllPlaylistsThrowUnauthorizedException() {
         // Arrange
-        when(service.tokenVerified(TOKEN)).thenReturn(false);
-
-        // Act
-        Response actual = sut.getAllPlaylists(TOKEN);
+        when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
 
         // Asserts
-        assertEquals(403, actual.getStatus());
+        assertThrows(ForbiddenException.class, () -> {
+            sut.getAllPlaylists(TOKEN);
+        });
     }
 
     @Test
@@ -73,15 +74,14 @@ public class PlaylistControllerTest {
     }
 
     @Test
-    public void deleteAPlaylistReturnsWith403() {
+    public void deleteAPlaylistThrowUnauthorizedException() {
         // Arrange
-        when(service.tokenVerified(TOKEN)).thenReturn(false);
-
-        // Act
-        Response actual = sut.deleteAPlaylist(PLAYLIST_ID, TOKEN);
+        when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
 
         // Asserts
-        assertEquals(403, actual.getStatus());
+        assertThrows(ForbiddenException.class, () -> {
+            sut.deleteAPlaylist(PLAYLIST_ID, TOKEN);
+        });
     }
 
     @Test
@@ -97,15 +97,14 @@ public class PlaylistControllerTest {
     }
 
     @Test
-    public void addAPlaylistReturnsWith403() {
+    public void addAPlaylistThrowUnauthorizedException() {
         // Arrange
-        when(service.tokenVerified(TOKEN)).thenReturn(false);
-
-        // Act
-        Response actual = sut.addAPlaylist(playlistDTO, TOKEN);
+        when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
 
         // Asserts
-        assertEquals(403, actual.getStatus());
+        assertThrows(ForbiddenException.class, () -> {
+            sut.addAPlaylist(playlistDTO, TOKEN);
+        });
     }
 
     @Test
@@ -121,15 +120,14 @@ public class PlaylistControllerTest {
     }
 
     @Test
-    public void editAPlaylistReturnsWith403() {
+    public void editAPlaylistThrowUnauthorizedException() {
         // Arrange
-        when(service.tokenVerified(TOKEN)).thenReturn(false);
-
-        // Act
-        Response actual = sut.editAPlaylist(playlistDTO, TOKEN);
+        when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
 
         // Asserts
-        assertEquals(403, actual.getStatus());
+        assertThrows(ForbiddenException.class, () -> {
+            sut.editAPlaylist(playlistDTO, TOKEN);
+        });
     }
 
     @Test

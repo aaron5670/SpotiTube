@@ -23,8 +23,7 @@ public class PlaylistController {
     @Path("/playlists")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getAllPlaylists(@QueryParam("token") String token) {
-        if (!tokenService.tokenVerified(token))
-            return Response.status(403).build();
+        if (!tokenService.tokenVerified(token)) throw new ForbiddenException("Invalid user token");
 
         return Response.status(200).entity(playlistsDTO(token)).build();
     }
@@ -33,8 +32,7 @@ public class PlaylistController {
     @Path("/playlists/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteAPlaylist(@PathParam("id") int id, @QueryParam("token") String token) {
-        if (!tokenService.tokenVerified(token))
-            return Response.status(403).build();
+        if (!tokenService.tokenVerified(token)) throw new ForbiddenException("Invalid user token");
 
         iPlaylistDAO.deleteAPlaylist(id, token);
         return Response.status(200).entity(playlistsDTO(token)).build();
@@ -44,8 +42,7 @@ public class PlaylistController {
     @Path("/playlists")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addAPlaylist(PlaylistDTO playlistDTO, @QueryParam("token") String token) {
-        if (!tokenService.tokenVerified(token))
-            return Response.status(403).build();
+        if (!tokenService.tokenVerified(token)) throw new ForbiddenException("Invalid user token");
 
         iPlaylistDAO.addAPlaylist(playlistDTO.name, tokenService.getUsernameByToken(token), token);
         return Response.status(201).entity(playlistsDTO(token)).build();
@@ -55,8 +52,7 @@ public class PlaylistController {
     @Path("/playlists/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response editAPlaylist(PlaylistDTO playlistDTO, @QueryParam("token") String token) {
-        if (!tokenService.tokenVerified(token))
-            return Response.status(403).build();
+        if (!tokenService.tokenVerified(token)) throw new ForbiddenException("Invalid user token");
 
         iPlaylistDAO.editAPlaylist(playlistDTO.name, playlistDTO.id, token);
         return Response.status(200).entity(playlistsDTO(token)).build();

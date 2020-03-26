@@ -4,8 +4,9 @@ import oose.dea.controller.dto.TrackDTO;
 import oose.dea.controller.dto.TracksDTO;
 import oose.dea.dao.ITrackDAO;
 import oose.dea.domain.Track;
+import oose.dea.exceptions.ForbiddenException;
 import oose.dea.service.TokenService;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.core.Response;
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -27,8 +29,8 @@ public class TracksControllerTest {
     private static ITrackDAO iTrackDAO;
     private static TrackDTO trackDTO;
 
-    @BeforeAll
-    public static void setup() {
+    @BeforeEach
+    public void setup() {
         sut = new TracksController();
         service = mock(TokenService.class);
         iTrackDAO = mock(ITrackDAO.class);
@@ -40,15 +42,14 @@ public class TracksControllerTest {
     }
 
     @Test
-    public void getAllTracksReturnsWith403() {
+    public void getAllTracksThrowUnauthorizedException() {
         // Arrange
-        when(service.tokenVerified(TOKEN)).thenReturn(false);
-
-        // Act
-        Response actual = sut.getAllTracks(PLAYLIST_ID, TOKEN);
+        when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
 
         // Asserts
-        assertEquals(403, actual.getStatus());
+        assertThrows(ForbiddenException.class, () -> {
+            sut.getAllTracks(PLAYLIST_ID, TOKEN);
+        });
     }
 
     @Test
@@ -64,15 +65,14 @@ public class TracksControllerTest {
     }
 
     @Test
-    public void deleteATrackReturnsWith403() {
+    public void deleteATrackThrowUnauthorizedException() {
         // Arrange
-        when(service.tokenVerified(TOKEN)).thenReturn(false);
-
-        // Act
-        Response actual = sut.deleteTrackFromPlaylist(PLAYLIST_ID, TRACK_ID, TOKEN);
+        when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
 
         // Asserts
-        assertEquals(403, actual.getStatus());
+        assertThrows(ForbiddenException.class, () -> {
+            sut.deleteTrackFromPlaylist(PLAYLIST_ID, TRACK_ID, TOKEN);
+        });
     }
 
     @Test
@@ -88,15 +88,14 @@ public class TracksControllerTest {
     }
 
     @Test
-    public void addATrackReturnsWith403() {
+    public void addATrackThrowUnauthorizedException() {
         // Arrange
-        when(service.tokenVerified(TOKEN)).thenReturn(false);
-
-        // Act
-        Response actual = sut.addTrackToPlaylist(PLAYLIST_ID, trackDTO, TOKEN);
+        when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
 
         // Asserts
-        assertEquals(403, actual.getStatus());
+        assertThrows(ForbiddenException.class, () -> {
+            sut.addTrackToPlaylist(PLAYLIST_ID, trackDTO, TOKEN);
+        });
     }
 
     @Test

@@ -28,8 +28,10 @@ public class PlaylistDAO implements IPlaylistDAO {
                     "FROM playlists p\n" +
                     "INNER JOIN users u on p.owner = u.username\n" +
                     "LEFT OUTER JOIN tokens t on u.username = t.username";
+
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
             ResultSet resultSet = preparedStatement.executeQuery();
+
             List<Playlist> playlists = new ArrayList<>();
 
             while (resultSet.next()) {
@@ -38,7 +40,7 @@ public class PlaylistDAO implements IPlaylistDAO {
                 playlist.setName(resultSet.getString("p.name"));
                 if (resultSet.getString("t.token").equals(token))
                     playlist.setOwner(true);
-                 else
+                else
                     playlist.setOwner(false);
 
                 playlist.setTotalDuration(resultSet.getInt("length"));

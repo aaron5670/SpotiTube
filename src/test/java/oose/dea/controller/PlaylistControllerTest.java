@@ -4,6 +4,7 @@ import oose.dea.controller.dto.PlaylistDTO;
 import oose.dea.controller.dto.PlaylistsDTO;
 import oose.dea.dao.IPlaylistDAO;
 import oose.dea.domain.Playlist;
+import oose.dea.domain.Track;
 import oose.dea.exceptions.ForbiddenException;
 import oose.dea.service.TokenService;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,8 +17,7 @@ import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
@@ -153,9 +153,10 @@ public class PlaylistControllerTest {
 
         Playlist playlist = new Playlist();
         playlist.setId(playlistDTO.id);
+        playlist.setName(playlistDTO.name);
         playlist.setOwner(playlistDTO.owner);
         playlist.setTotalDuration(playlistsDTO.length);
-        playlist.setName(playlistDTO.name);
+        playlist.setTracks(null);
 
         playlistList.add(playlist);
 
@@ -168,7 +169,8 @@ public class PlaylistControllerTest {
         // Asserts
         assertEquals(playlist.getId(), actual.id);
         assertEquals(playlist.getName(), actual.name);
-        assertEquals(playlist.getTotalDuration(), playlistsDTO.length);
         assertEquals(playlist.isOwner(), actual.owner);
+        assertNull(playlist.getTracks());
+        assertEquals(playlist.getTotalDuration(), playlistsDTO.length);
     }
 }

@@ -67,6 +67,29 @@ public class TracksControllerTest {
     }
 
     @Test
+    public void getAllTracksFromPlaylistThrowUnauthorizedException() {
+        // Arrange
+        when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
+
+        // Asserts
+        assertThrows(ForbiddenException.class, () -> {
+            sut.getAllTracksFromPlaylist(PLAYLIST_ID, TOKEN);
+        });
+    }
+
+    @Test
+    public void getAllTracksFromPlaylistReturnsWith200() {
+        // Arrange
+        when(service.tokenVerified(TOKEN)).thenReturn(true);
+
+        // Act
+        Response actual = sut.getAllTracksFromPlaylist(PLAYLIST_ID, TOKEN);
+
+        // Asserts
+        assertEquals(200, actual.getStatus());
+    }
+
+    @Test
     public void deleteATrackThrowUnauthorizedException() {
         // Arrange
         when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
@@ -113,7 +136,7 @@ public class TracksControllerTest {
     }
 
     @Test
-    public void tracksDTOReturnsSinglePlaylist(){
+    public void tracksDTOReturnsSinglePlaylist() {
         // Arrange
         List<Track> tracks = new ArrayList<>();
 

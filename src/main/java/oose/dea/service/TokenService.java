@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 public class TokenService {
 
+    @Inject
     private ITokenDAO iTokenDAO;
 
     public boolean tokenVerified(String token) {
@@ -14,10 +15,5 @@ public class TokenService {
 
     public String getUsernameByToken(String token) {
         return iTokenDAO.getUsername(token);
-    }
-
-    @Inject
-    public void setiTokenDAO(ITokenDAO iTokenDAO) {
-        this.iTokenDAO = iTokenDAO;
     }
 }

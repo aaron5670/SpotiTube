@@ -4,7 +4,6 @@ import oose.dea.controller.dto.LoginRequestDTO;
 import oose.dea.controller.dto.TokenDTO;
 import oose.dea.exceptions.UnauthorizedException;
 import oose.dea.service.LoginService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -12,6 +11,7 @@ import org.mockito.Mock;
 
 import javax.ws.rs.core.Response;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -64,7 +64,7 @@ public class LoginControllerTest {
         Response actual = sut.login(loginRequestDTO);
 
         // Assert
-        Assertions.assertEquals(200, actual.getStatus());
+        assertEquals(200, actual.getStatus());
     }
 
     @Test

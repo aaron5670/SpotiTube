@@ -4,7 +4,6 @@ import oose.dea.controller.dto.PlaylistDTO;
 import oose.dea.controller.dto.PlaylistsDTO;
 import oose.dea.dao.IPlaylistDAO;
 import oose.dea.domain.Playlist;
-import oose.dea.domain.Track;
 import oose.dea.exceptions.ForbiddenException;
 import oose.dea.service.TokenService;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +56,7 @@ public class PlaylistControllerTest {
     @Test
     public void getAllPlaylistsThrowUnauthorizedException() {
         // Arrange
-        when(service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
+        when(!service.tokenVerified(TOKEN)).thenThrow(new ForbiddenException("Invalid user token"));
 
         // Asserts
         assertThrows(ForbiddenException.class, () -> {

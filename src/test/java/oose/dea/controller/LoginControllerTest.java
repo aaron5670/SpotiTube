@@ -37,7 +37,7 @@ public class LoginControllerTest {
     @Test
     void loginWithInvalidCredentialsThrowUnauthorizedException() {
         // Arrange
-        when(service.login(USERNAME, PASSWORD)).thenThrow(new UnauthorizedException("Invalid credentials"));
+        when(service.login(USERNAME, PASSWORD)).thenReturn(null);
 
         LoginRequestDTO loginRequestDTO = new LoginRequestDTO();
         loginRequestDTO.user = USERNAME;

@@ -54,7 +54,8 @@ public class TracksController {
     @Path("/playlists/{playlistId}/tracks")
     @Produces(MediaType.APPLICATION_JSON)
     public Response addTrackToPlaylist(@PathParam("playlistId") int playlistId, TrackDTO trackDTO, @QueryParam("token") String token) {
-        if (!tokenService.tokenVerified(token)) throw new ForbiddenException("Invalid user token");
+        if (!tokenService.tokenVerified(token))
+            return Response.status(400).build();
 
         iTrackDAO.addTrackToPlaylist(playlistId, trackDTO.id, trackDTO.offlineAvailable);
         return Response.status(201).entity(tracksDTO(playlistId, false, token)).build();

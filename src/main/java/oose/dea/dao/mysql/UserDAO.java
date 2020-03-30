@@ -1,4 +1,6 @@
-package oose.dea.dao;
+package oose.dea.dao.mysql;
+
+import oose.dea.dao.IUserDAO;
 
 import javax.annotation.Resource;
 import javax.enterprise.inject.Default;

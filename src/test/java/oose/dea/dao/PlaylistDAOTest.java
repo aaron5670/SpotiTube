@@ -1,5 +1,6 @@
 package oose.dea.dao;
 
+import oose.dea.dao.mysql.PlaylistDAO;
 import oose.dea.domain.Playlist;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

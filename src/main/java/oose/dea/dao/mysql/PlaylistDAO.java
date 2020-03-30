@@ -1,5 +1,6 @@
-package oose.dea.dao;
+package oose.dea.dao.mysql;
 
+import oose.dea.dao.IPlaylistDAO;
 import oose.dea.domain.Playlist;
 
 import javax.annotation.Resource;

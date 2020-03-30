@@ -1,5 +1,6 @@
-package oose.dea.dao;
+package oose.dea.dao.mysql;
 
+import oose.dea.dao.ITrackDAO;
 import oose.dea.domain.Track;
 
 import javax.annotation.Resource;

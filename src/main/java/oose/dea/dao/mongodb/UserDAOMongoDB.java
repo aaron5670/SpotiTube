@@ -33,4 +33,5 @@ public class UserDAOMongoDB implements IUserDAO {
                 eq("username", username),
                 combine(set("token", token)));
     }
+
 }
